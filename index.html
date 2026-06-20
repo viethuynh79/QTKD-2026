@@ -1,1 +1,632 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cổng Thông Tin Tuyển Sinh Quản Trị Kinh Doanh 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+        :root {
+            /* Tông màu Xanh Biển Chuyên Nghiệp (3 Lớp) */
+            --blue-lightest: #f0f9ff;
+            --blue-light: #bae6fd;
+            --blue-medium: #0284c7;
+            --blue-primary: #0369a1;
+            --blue-dark: #075985;
+            --blue-darkest: #082f49;
+
+            /* Thuộc tính Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(186, 230, 253, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(7, 89, 133, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--blue-lightest) 0%, #e0f2fe 50%, #bae6fd 100%);
+            color: var(--blue-darkest);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Hiệu ứng mảng màu chuyển động (Liquid Glass) */
+        .blob-1, .blob-2, .blob-3 {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            animation: float 25s infinite ease-in-out alternate;
+        }
+        .blob-1 {
+            width: 500px; height: 500px;
+            background: rgba(56, 189, 248, 0.3);
+            top: -10%; left: -10%;
+        }
+        .blob-2 {
+            width: 600px; height: 600px;
+            background: rgba(14, 165, 233, 0.2);
+            bottom: -20%; right: -10%;
+            animation-delay: -5s;
+            animation-direction: alternate-reverse;
+        }
+        .blob-3 {
+            width: 400px; height: 400px;
+            background: rgba(2, 132, 199, 0.15);
+            top: 40%; left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -40px) scale(1.05); }
+            100% { transform: translate(-30px, 30px) scale(0.95); }
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem;
+        }
+
+        /* Bảng kính thông tin */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 12px 40px 0 rgba(7, 89, 133, 0.12);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            padding-top: 1rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 800;
+            color: var(--blue-darkest);
+            margin-bottom: 0.8rem;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.15rem;
+            color: var(--blue-dark);
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            color: var(--blue-darkest);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid rgba(2, 132, 199, 0.2);
+            padding-bottom: 0.8rem;
+        }
+
+        .section-title span {
+            display: inline-block;
+            background: var(--blue-primary);
+            width: 6px;
+            height: 24px;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        /* Điều hướng Tabs chuyên nghiệp */
+        .segmented-control {
+            display: flex;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .segmented-control::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            flex: 1;
+            min-width: max-content;
+            background: transparent;
+            border: none;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--blue-dark);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: var(--blue-primary);
+            box-shadow: 0 4px 12px rgba(3, 105, 161, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .strength-badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: var(--blue-darkest);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--blue-primary);
+            width: 100%;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .content-group {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1.8rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .content-group h3 {
+            font-size: 1.15rem;
+            color: var(--blue-primary);
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        ul { list-style: none; }
+
+        ul li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #334155;
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        ul li::before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            color: var(--blue-medium);
+            font-size: 0.7rem;
+            top: 5px;
+        }
+
+        /* Bảng dữ liệu */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--glass-border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th, td {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(2, 132, 199, 0.1);
+            font-size: 0.95rem;
+            vertical-align: top;
+        }
+
+        th {
+            background: rgba(186, 230, 253, 0.4);
+            font-weight: 700;
+            color: var(--blue-darkest);
+        }
+
+        tr:last-child td { border-bottom: none; }
+        
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .highlight {
+            color: var(--blue-primary);
+            font-weight: 700;
+        }
+        
+        .sub-text {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--blue-dark);
+            margin-top: 4px;
+        }
+
+        .note {
+            background: rgba(241, 245, 249, 0.8);
+            border-left: 4px solid var(--blue-medium);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            border-top: 1px solid rgba(2, 132, 199, 0.1);
+            margin-top: 2rem;
+        }
+
+        .author-tag {
+            display: inline-block;
+            font-weight: 600;
+            color: var(--blue-dark);
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Tối ưu hóa giao diện di động */
+        @media (max-width: 850px) {
+            .content-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem 0.5rem; }
+            .glass-panel { padding: 1.5rem 1rem; border-radius: 12px; }
+            .content-group { padding: 1.2rem; }
+            .segmented-control { flex-direction: column; gap: 4px; padding: 8px; }
+            .tab-btn { width: 100%; text-align: left; padding: 12px 16px; border-radius: 6px; }
+            th, td { padding: 1rem; font-size: 0.9rem; }
+            .section-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Khối nền chuyển động -->
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+    <div class="blob-3"></div>
+
+    <div class="container">
+        <header>
+            <h1>Thông Tin Tuyển Sinh Đại Học 2026</h1>
+            <p>Phân tích chuyên sâu ngành Quản Trị Kinh Doanh</p>
+        </header>
+
+        <!-- 01. NỘI DUNG GIẢNG DẠY -->
+        <div class="glass-panel">
+            <h2 class="section-title"><span></span>01. Nội Dung Giảng Dạy & Thế Mạnh Đào Tạo</h2>
+            
+            <div class="segmented-control">
+                <button class="tab-btn active" onclick="openTab('ufm', this)">ĐH Tài chính - Marketing (UFM)</button>
+                <button class="tab-btn" onclick="openTab('hub', this)">ĐH Ngân hàng TP.HCM (HUB)</button>
+                <button class="tab-btn" onclick="openTab('ou', this)">ĐH Mở TP.HCM (OU)</button>
+                <button class="tab-btn" onclick="openTab('fpt', this)">ĐH FPT TP.HCM</button>
+            </div>
+
+            <!-- UFM -->
+            <div id="ufm" class="tab-content active">
+                <div class="strength-badge">Định hướng chuyên môn: Tập trung phát triển năng lực vận hành thương mại và quản trị bán hàng đa kênh.</div>
+                <div class="content-grid">
+                    <div class="content-group">
+                        <h3>Khung Chương Trình (Cập nhật 2026)</h3>
+                        <ul>
+                            <li><strong>Chương trình chuẩn:</strong> Đào tạo 03 chuyên ngành (Quản trị kinh doanh tổng hợp, Quản trị bán hàng, Quản trị dự án).</li>
+                            <li><strong>Chương trình Chất lượng cao (CLC):</strong> Đào tạo 02 chuyên ngành (Quản trị kinh doanh tổng hợp, Quản trị bán hàng).</li>
+                            <li><strong>Chương trình CLC Tiếng Anh toàn phần:</strong> Đào tạo 01 chuyên ngành duy nhất là Quản trị kinh doanh.</li>
+                            <li><strong>Chương trình Quốc tế (Viện ISFM):</strong> Giảng dạy hoàn toàn bằng tiếng Anh, sinh viên tốt nghiệp nhận bằng Cử nhân từ Đại học UCSI (Malaysia).</li>
+                        </ul>
+                    </div>
+                    <div class="content-group">
+                        <h3>Trọng Tâm Kiến Thức</h3>
+                        <ul>
+                            <li>Chương trình thiết kế theo hướng tích hợp, yêu cầu sinh viên nắm vững nền tảng kinh tế vĩ mô, tài chính doanh nghiệp và chuỗi cung ứng trước khi phân nhánh.</li>
+                            <li>Các học phần chuyên sâu chú trọng vào: Phân tích hành vi người tiêu dùng, Kỹ năng đàm phán thương mại, và Quản trị kênh phân phối hiện đại (Omnichannel).</li>
+                            <li>Trang bị năng lực thẩm định dự án đầu tư và kiểm soát rủi ro trong quản trị.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HUB -->
+            <div id="hub" class="tab-content">
+                <div class="strength-badge">Định hướng chuyên môn: Tích hợp nền tảng quản trị tài chính doanh nghiệp với tư duy chuyển đổi số (E-Business).</div>
+                <div class="content-grid">
+                    <div class="content-group">
+                        <h3>Khung Chương Trình (Cập nhật 2026)</h3>
+                        <ul>
+                            <li><strong>Chương trình ĐHCQ Chuẩn:</strong> Sinh viên tự chọn chuyên ngành Quản trị kinh doanh nâng cao hoặc định hướng E-Business.</li>
+                            <li><strong>Chương trình ĐHCQ CLC (Tiếng Anh Bán Phần):</strong> Nâng cao tỷ trọng các học phần giảng dạy bằng ngôn ngữ Anh.</li>
+                            <li><strong>Chương trình Song Bằng / Cử nhân Quốc tế (SaigonISB):</strong> Chương trình cấp bằng của HUB và bằng của đại học đối tác nước ngoài. Giảng dạy 100% bằng tiếng Anh.</li>
+                        </ul>
+                    </div>
+                    <div class="content-group">
+                        <h3>Trọng Tâm Kiến Thức</h3>
+                        <ul>
+                            <li>Kế thừa nền tảng chuyên môn về tài chính, chương trình tập trung mạnh vào Kế toán quản trị, Quản trị dòng tiền và Phân tích báo cáo tài chính.</li>
+                            <li>Tiên phong đưa các học phần công nghệ vào chuyên ngành: Phân tích dữ liệu kinh doanh (Business Analytics), Ứng dụng dữ liệu lớn (Big Data), và Thương mại điện tử.</li>
+                            <li>Định hướng đầu ra phù hợp với các doanh nghiệp công nghệ tài chính và khối vận hành hệ thống.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OU -->
+            <div id="ou" class="tab-content">
+                <div class="strength-badge">Định hướng chuyên môn: Áp dụng tiêu chuẩn chất lượng FIBAA Châu Âu, chú trọng khởi sự doanh nghiệp và mô phỏng thực tiễn.</div>
+                <div class="content-grid">
+                    <div class="content-group">
+                        <h3>Khung Chương Trình (Cập nhật 2026)</h3>
+                        <ul>
+                            <li><strong>Chương trình Đại trà:</strong> Cung cấp các định hướng hẹp chuyên sâu: Quản trị Marketing, Quản trị dịch vụ du lịch, Khởi nghiệp & Đổi mới sáng tạo.</li>
+                            <li><strong>Chương trình Chất lượng cao:</strong> Khung đào tạo tinh gọn 125 tín chỉ, tăng cường thực hành mô phỏng doanh nghiệp.</li>
+                        </ul>
+                    </div>
+                    <div class="content-group">
+                        <h3>Trọng Tâm Kiến Thức</h3>
+                        <ul>
+                            <li>Nội dung chuyên ngành tập trung vào hệ sinh thái doanh nghiệp: Kỹ năng huy động vốn, Lập kế hoạch kinh doanh và Quản trị doanh nghiệp vừa và nhỏ (SMEs).</li>
+                            <li>Yêu cầu bắt buộc hoàn thành học phần Mô phỏng kinh doanh (Business Simulation Game) trên nền tảng phần mềm quản trị.</li>
+                            <li>Kết nối chặt chẽ với mạng lưới doanh nghiệp nhằm thực hiện các đồ án tốt nghiệp thực tế.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FPT -->
+            <div id="fpt" class="tab-content">
+                <div class="strength-badge">Định hướng chuyên môn: Tiêu chuẩn hóa quốc tế, ứng dụng Trí tuệ nhân tạo (AI) và đào tạo thông qua thực tiễn (OJT).</div>
+                <div class="content-grid">
+                    <div class="content-group">
+                        <h3>Khung Chương Trình (Cập nhật 2026)</h3>
+                        <ul>
+                            <li>Nhà trường áp dụng một hệ chuẩn đào tạo duy nhất, không phân chia hệ đại trà hay chất lượng cao.</li>
+                            <li><strong>Giáo trình và Ngôn ngữ:</strong> Sử dụng 100% tài liệu bản quyền quốc tế. Ngôn ngữ giảng dạy chuyên ngành là Tiếng Anh.</li>
+                            <li>Bắt buộc hoàn thành chứng chỉ Ngoại ngữ 2 (Tiếng Trung hoặc Tiếng Nhật) trước khi tốt nghiệp.</li>
+                        </ul>
+                    </div>
+                    <div class="content-group">
+                        <h3>Trọng Tâm Kiến Thức</h3>
+                        <ul>
+                            <li><strong>Học kỳ Thực tập doanh nghiệp (OJT):</strong> Yêu cầu sinh viên năm 3 tham gia làm việc toàn thời gian tại các doanh nghiệp đối tác từ 4 đến 8 tháng.</li>
+                            <li>Chương trình tích hợp bắt buộc ứng dụng công nghệ (Data Analysis, AI) vào các khía cạnh quản trị như Nhân sự, Tài chính và Thương mại.</li>
+                            <li>Phát triển toàn diện văn hóa và thể chất thông qua học phần Võ Vovinam và Nhạc cụ truyền thống.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 02. YÊU CẦU TIẾNG ANH -->
+        <div class="glass-panel">
+            <h2 class="section-title"><span></span>02. Yêu Cầu Năng Lực Ngoại Ngữ</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Cơ Sở Đào Tạo</th>
+                            <th style="width: 35%;">Hệ Chuẩn / Đại trà</th>
+                            <th style="width: 40%;">Hệ CLC / Tiếng Anh / Quốc tế</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Đại học Tài chính - Marketing (UFM)</strong></td>
+                            <td>Chứng chỉ TOEIC 405 (hoặc B1)</td>
+                            <td>Chứng chỉ IELTS 5.5 hoặc TOEIC 600</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Đại học Ngân hàng TP.HCM (HUB)</strong></td>
+                            <td>Chứng chỉ TOEIC 450 (hoặc B1)</td>
+                            <td>Chứng chỉ IELTS 5.5 hoặc TOEIC 600<br><span class="sub-text">*Hệ Quốc tế yêu cầu IELTS 5.5 đầu vào để miễn học tiếng Anh dự bị.</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Đại học Mở TP.HCM (OU)</strong></td>
+                            <td>Chứng chỉ TOEIC 450 (hoặc B1)</td>
+                            <td>Chứng chỉ TOEIC 600 (hoặc B2)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Đại học FPT TP.HCM</strong></td>
+                            <td><em>Không phân hệ chuẩn</em></td>
+                            <td><span class="highlight">Chứng chỉ IELTS 6.0</span><br><span class="sub-text">Điều kiện tiên quyết để vào học kỳ chuyên ngành. Nếu chưa đạt, sinh viên bắt buộc học tiếng Anh dự bị (tối đa 6 cấp độ).</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 03. HỌC PHÍ -->
+        <div class="glass-panel">
+            <h2 class="section-title"><span></span>03. Mức Học Phí Tham Khảo (Năm 2026)</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Cơ Sở Đào Tạo</th>
+                            <th style="width: 25%;">Hệ Chuẩn (VNĐ/Năm)</th>
+                            <th style="width: 30%;">Hệ CLC / Quốc tế (VNĐ/Năm)</th>
+                            <th style="width: 25%;">Cơ chế tài chính</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ĐH Tài chính - Marketing (UFM)</strong></td>
+                            <td>Khoảng 28.000.000 - 30.000.000</td>
+                            <td>Khoảng 45.000.000 - 55.000.000</td>
+                            <td>Thu theo tín chỉ đăng ký thực tế (Từ 845.000đ - 1.753.000đ / tín chỉ).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH Ngân hàng TP.HCM (HUB)</strong></td>
+                            <td>Khoảng 21.000.000 - 25.000.000</td>
+                            <td>Hệ CLC: ~ 40.500.000<br>Hệ Song bằng: ~ 60.000.000</td>
+                            <td>Thu theo định mức cố định từng học kỳ.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH Mở TP.HCM (OU)</strong></td>
+                            <td>Khoảng 30.000.000 - 32.000.000</td>
+                            <td>Khoảng 50.000.000 - 52.000.000</td>
+                            <td>Thu theo số lượng tín chỉ đăng ký.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH FPT TP.HCM</strong></td>
+                            <td><em>Không áp dụng</em></td>
+                            <td>Khoảng 94.800.000</td>
+                            <td>Thu trọn gói (31.600.000đ / học kỳ x 3 kỳ / năm). Chi phí đã bao gồm tài liệu nhập khẩu.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 04. ĐIỂM CHUẨN THAM KHẢO 2025 (CHỈ RIÊNG NGÀNH QUẢN TRỊ KINH DOANH) -->
+        <div class="glass-panel">
+            <h2 class="section-title"><span></span>04. Thống Kê Điểm Chuẩn 2025 - Chuyên Ngành Quản Trị Kinh Doanh</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 18%;">Cơ Sở Đào Tạo</th>
+                            <th style="width: 27%;">Phương thức: Kết quả THPTQG</th>
+                            <th style="width: 27%;">Phương thức: Xét Học bạ THPT</th>
+                            <th style="width: 28%;">Kỳ thi riêng (V-SAT / ĐGNL)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ĐH Tài chính - Marketing (UFM)</strong></td>
+                            <td>
+                                <strong>Chương trình Chuẩn:</strong> 24.60 điểm<br>
+                                <strong>Chương trình CLC:</strong> 23.60 điểm<br>
+                                <strong>Tiếng Anh toàn phần:</strong> 23.50 điểm
+                            </td>
+                            <td>
+                                <strong>Chương trình Chuẩn:</strong> 27.80 điểm<br>
+                                <strong>Chương trình CLC:</strong> 27.00 điểm
+                            </td>
+                            <td>
+                                <strong>Kỳ thi V-SAT:</strong> Không áp dụng quy đổi trực tiếp trong năm 2025.<br>
+                                <strong>ĐGNL ĐHQG-HCM:</strong> Từ 780 / 1200 điểm.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH Ngân hàng TP.HCM (HUB)</strong></td>
+                            <td>
+                                <strong>Chương trình Chuẩn:</strong> 24.71 điểm<br>
+                                <strong>Chương trình CLC:</strong> 23.85 điểm
+                            </td>
+                            <td>
+                                <strong>Xét tuyển tổng hợp (Học bạ + Thành tích):</strong> Từ 82 / 100 điểm quy đổi.
+                            </td>
+                            <td>
+                                <strong>Kỳ thi V-SAT:</strong> Mức điểm chuẩn 265 / 450 điểm (Thang điểm chưa quy đổi).<br>
+                                <strong>ĐGNL ĐHQG-HCM:</strong> Từ 800 / 1200 điểm.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH Mở TP.HCM (OU)</strong></td>
+                            <td>
+                                <strong>Chương trình Đại trà:</strong> 24.40 điểm<br>
+                                <strong>Chương trình CLC:</strong> 23.20 điểm
+                            </td>
+                            <td>
+                                <strong>Chương trình Đại trà:</strong> 26.80 điểm<br>
+                                <strong>Chương trình CLC:</strong> 26.00 điểm
+                            </td>
+                            <td>
+                                <strong>ĐGNL ĐHQG-HCM:</strong> Mức điểm chuẩn từ 750 / 1200 điểm. (Trường không sử dụng điểm V-SAT).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ĐH FPT TP.HCM</strong></td>
+                            <td>
+                                <span class="highlight">Tiêu chuẩn SchoolRank:</span><br>
+                                Yêu cầu đạt mức xếp hạng Top 40 SchoolRank (Dựa trên điểm thi THPT quốc gia).
+                            </td>
+                            <td>
+                                <span class="highlight">Tiêu chuẩn SchoolRank:</span><br>
+                                Yêu cầu đạt mức xếp hạng Top 40 SchoolRank (Dựa trên học bạ THPT).
+                            </td>
+                            <td>
+                                <strong>ĐGNL ĐHQG-HCM:</strong> Từ 670 / 1200 điểm.<br>
+                                <strong>ĐGNL ĐHQG Hà Nội:</strong> Từ 90 / 150 điểm.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="note">
+                <strong>Ghi chú:</strong> Dữ liệu trên được trích xuất từ văn bản công bố điểm chuẩn chính thức năm 2025, áp dụng chuẩn xác và duy nhất cho ngành Quản trị Kinh doanh. Mức điểm V-SAT của HUB phản ánh tổng điểm bài thi trực tiếp trên máy tính (chưa qua công thức quy đổi thang 30).
+            </div>
+        </div>
+
+        <footer>
+            <div class="author-tag">
+                Thông tin được tổng hợp, biên tập và hệ thống hóa bởi Khanh Viet - K26.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function openTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
